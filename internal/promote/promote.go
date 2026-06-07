@@ -15,6 +15,10 @@ import (
 	"github.com/FelipeFuhr/ffreis-latex-compiler/internal/posts"
 )
 
+// indexMD is the filename of the compiled Markdown artifact that promote copies
+// into the posts repo.
+const indexMD = "index.md"
+
 // Options configures a promote run.
 type Options struct {
 	ArticlesRoot string // to resolve the article's post_slug
@@ -42,7 +46,7 @@ func Run(opts Options) (*Outcome, error) {
 	postSlug := a.PostSlug()
 
 	srcDir := filepath.Join(opts.OutRoot, opts.Slug)
-	srcIndex := filepath.Join(srcDir, "index.md")
+	srcIndex := filepath.Join(srcDir, indexMD)
 	if _, err := os.Stat(srcIndex); err != nil {
 		return nil, fmt.Errorf("no compiled Markdown for %q — run build with -formats md first: %w", opts.Slug, err)
 	}
@@ -60,7 +64,7 @@ func Run(opts Options) (*Outcome, error) {
 	if err := os.MkdirAll(targetDir, 0o750); err != nil {
 		return nil, err
 	}
-	if err := fsutil.CopyFile(srcIndex, filepath.Join(targetDir, "index.md")); err != nil {
+	if err := fsutil.CopyFile(srcIndex, filepath.Join(targetDir, indexMD)); err != nil {
 		return nil, err
 	}
 	if err := fsutil.CopyDir(filepath.Join(srcDir, "images"), filepath.Join(targetDir, "images")); err != nil {
@@ -78,7 +82,7 @@ func Run(opts Options) (*Outcome, error) {
 
 // plannedFiles lists the artifacts promote copies, relative to the target dir.
 func plannedFiles(srcDir string) []string {
-	files := []string{"index.md"}
+	files := []string{indexMD}
 	imagesDir := filepath.Join(srcDir, "images")
 	entries, err := os.ReadDir(imagesDir)
 	if err != nil {

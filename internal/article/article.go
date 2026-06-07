@@ -24,6 +24,10 @@ const MetaName = "meta.yaml"
 // LaTeX source and copied alongside the generated post.
 const ImagesDir = "images"
 
+// errArticleFmt is the shared format string used when wrapping errors that
+// identify an article by slug.
+const errArticleFmt = "article %q: %w"
+
 // Meta is the parsed contents of an article's meta.yaml. Title and Date are
 // required; everything else is optional. Field names mirror the the posts repo
 // frontmatter so promotion is a straight copy.
@@ -63,7 +67,7 @@ func Load(articlesRoot, slug string) (*Article, error) {
 	dir := filepath.Join(articlesRoot, "articles", slug)
 	info, err := os.Stat(dir)
 	if err != nil {
-		return nil, fmt.Errorf("article %q: %w", slug, err)
+		return nil, fmt.Errorf(errArticleFmt, slug, err)
 	}
 	if !info.IsDir() {
 		return nil, fmt.Errorf("article %q: %s is not a directory", slug, dir)
@@ -76,12 +80,12 @@ func Load(articlesRoot, slug string) (*Article, error) {
 
 	meta, err := loadMeta(filepath.Join(dir, MetaName))
 	if err != nil {
-		return nil, fmt.Errorf("article %q: %w", slug, err)
+		return nil, fmt.Errorf(errArticleFmt, slug, err)
 	}
 
 	images, err := listImages(filepath.Join(dir, ImagesDir))
 	if err != nil {
-		return nil, fmt.Errorf("article %q: %w", slug, err)
+		return nil, fmt.Errorf(errArticleFmt, slug, err)
 	}
 
 	return &Article{
