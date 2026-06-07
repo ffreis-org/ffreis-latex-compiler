@@ -12,6 +12,8 @@ on:
       - '**'
       - '.github/workflows/**'
 
+permissions: {}
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 

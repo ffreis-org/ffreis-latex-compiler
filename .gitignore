@@ -3,5 +3,8 @@ dist/
 *.out
 coverage.out
 
+# Built binary (compiled artifact, not source)
+/ffreis-latex-compiler
+
 # Sonar / scanner artifacts
 .scannerwork/
