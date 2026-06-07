@@ -2,3 +2,6 @@ dist/
 .bin/
 *.out
 coverage.out
+
+# Sonar / scanner artifacts
+.scannerwork/
