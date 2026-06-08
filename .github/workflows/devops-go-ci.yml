@@ -30,30 +30,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  mod-tidy:
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-mod-tidy-check.yml@b253b2329a11552b6276781c56f6dc6fd1718710
+  # gofmt + go vet + golangci-lint + go mod tidy collapsed into ONE job (one
+  # checkout + one Go toolchain setup) instead of three separate caller jobs.
+  # GitHub bills per job rounded up to the minute, so this drops ~3 billed min
+  # to ~1 with no loss of coverage (each check still runs + is named on failure).
+  quick-checks:
+    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-quick-checks.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
     with:
       go-version: "1.25.10"
       working-directory: "."
 
-  fmt:
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-fmt.yml@b253b2329a11552b6276781c56f6dc6fd1718710
-    with:
-      go-version: "1.25.10"
-      working-directory: "."
-
-  lint:
-    needs: [fmt]
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-lint.yml@b253b2329a11552b6276781c56f6dc6fd1718710
-    with:
-      go-version: "1.25.10"
-      working-directory: "."
-
+  # Heavy jobs stay separate. They gate on quick-checks so a fmt/lint/tidy
+  # failure short-circuits before spending test minutes. go-test.yml@d7bf8fd
+  # enables Go's test-result cache by default (unchanged packages report cached).
   test:
     if: ${{ !github.event.pull_request.draft }}
-
-    needs: [fmt]
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-test.yml@b253b2329a11552b6276781c56f6dc6fd1718710
+    needs: [quick-checks]
+    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-test.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
     with:
       go-version: "1.25.10"
       working-directory: "."
@@ -61,9 +54,8 @@ jobs:
 
   integration:
     if: ${{ !github.event.pull_request.draft }}
-
-    needs: [fmt]
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-test.yml@b253b2329a11552b6276781c56f6dc6fd1718710
+    needs: [quick-checks]
+    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-test.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
     with:
       go-version: "1.25.10"
       working-directory: "."
