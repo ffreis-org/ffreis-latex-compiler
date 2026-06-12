@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   mutation:
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-mutation.yml@caa797cc7baec52e99f21b86f532a4b7c88cf4fa # fix/grype-install-outside-scan-path
+    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-mutation.yml@3858e9e74c805067e454740b195372c7195f333b # v1.5.0
     with:
       packages: "./internal/..."
       threshold: 60
