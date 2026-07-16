@@ -35,7 +35,7 @@ jobs:
   # GitHub bills per job rounded up to the minute, so this drops ~3 billed min
   # to ~1 with no loss of coverage (each check still runs + is named on failure).
   quick-checks:
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-quick-checks.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
+    uses: ffreis-org/ffreis-workflows-go/.github/workflows/go-quick-checks.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
     with:
       go-version: "1.25.10"
       working-directory: "."
@@ -46,7 +46,7 @@ jobs:
   test:
     if: ${{ !github.event.pull_request.draft }}
     needs: [quick-checks]
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-test.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
+    uses: ffreis-org/ffreis-workflows-go/.github/workflows/go-test.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
     with:
       go-version: "1.25.10"
       working-directory: "."
@@ -55,7 +55,7 @@ jobs:
   integration:
     if: ${{ !github.event.pull_request.draft }}
     needs: [quick-checks]
-    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-test.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
+    uses: ffreis-org/ffreis-workflows-go/.github/workflows/go-test.yml@d7bf8fd2b474bbf40dad3dcb2ff41091c4d6ab9e
     with:
       go-version: "1.25.10"
       working-directory: "."

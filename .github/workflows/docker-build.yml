@@ -34,7 +34,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: FelipeFuhr/ffreis-workflows-container/.github/workflows/container-build.yml@f75a40f7a44cade2b00a8843f75b3f86dfe80a0e
+    uses: ffreis-org/ffreis-workflows-container/.github/workflows/container-build.yml@f75a40f7a44cade2b00a8843f75b3f86dfe80a0e
     with:
       image: "ffreis-latex-compiler"
       containerfile: "containers/Dockerfile.cli"
