@@ -33,7 +33,7 @@ jobs:
 
     permissions:
       contents: read
-    uses: ffreis-org/ffreis-workflows-go/.github/workflows/go-sonar.yml@b253b2329a11552b6276781c56f6dc6fd1718710
+    uses: FelipeFuhr/ffreis-workflows-go/.github/workflows/go-sonar.yml@b253b2329a11552b6276781c56f6dc6fd1718710
     with:
       go-version: "1.25.10"
       working-directory: "."
